@@ -5,8 +5,8 @@ import os
 
 app = Flask(__name__)
 
-MODEL_PATH = "model_dermatologie.pkl"
-FEATURES_PATH = "features.pkl"
+MODEL_PATH = "model/model_dermatologie.pkl"
+FEATURES_PATH = "model/features.pkl"
 
 model = joblib.load(MODEL_PATH)
 features = joblib.load(FEATURES_PATH)
