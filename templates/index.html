@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepSkyn - Prédiction dermatologique</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">DeepSkyn</div>
+        <div class="nav-links">
+            <a href="#prediction">Prédiction</a>
+            <a href="#about">À propos</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <span class="badge">Projet Machine Learning</span>
+            <h1>Prédiction des maladies dermatologiques</h1>
+            <p>
+                Saisissez les caractéristiques cliniques et histopathologiques du patient.
+                Le modèle prédit automatiquement la classe de maladie.
+            </p>
+        </div>
+    </header>
+
+    <main id="prediction" class="page">
+        <section class="card">
+            <div class="card-header">
+                <div>
+                    <h2>Formulaire patient</h2>
+                    <p>Pour la majorité des variables : 0 = absent, 1 = faible, 2 = moyen, 3 = fort.</p>
+                </div>
+                <button type="button" class="secondary-btn" onclick="resetForm()">Réinitialiser</button>
+            </div>
+
+            <form action="/predict" method="POST" id="predictionForm">
+                <div class="form-grid">
+                    {% for feature in features %}
+                    <div class="field">
+                        <label for="{{ feature }}">{{ pretty_label(feature) }}</label>
+                        <select name="{{ feature }}" id="{{ feature }}" required>
+                            {% if "family" in feature|lower %}
+                                <option value="0">0 - Non</option>
+                                <option value="1">1 - Oui</option>
+                            {% elif "age" in feature|lower %}
+                                <option value="0">0</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="40">40</option>
+                                <option value="50">50</option>
+                                <option value="60">60</option>
+                                <option value="70">70</option>
+                                <option value="80">80</option>
+                            {% else %}
+                                <option value="0">0 - Absent</option>
+                                <option value="1">1 - Faible</option>
+                                <option value="2">2 - Moyen</option>
+                                <option value="3">3 - Fort</option>
+                            {% endif %}
+                        </select>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="actions">
+                    <button type="submit" class="primary-btn">Prédire la maladie</button>
+                </div>
+            </form>
+
+            {% if prediction %}
+            <section class="result-card">
+                <div class="result-label">Résultat de prédiction</div>
+                <h3>{{ prediction }}</h3>
+
+                {% if probabilities %}
+                <div class="probabilities">
+                    {% for item in probabilities[:3] %}
+                    <div class="prob-row">
+                        <span>{{ item.label }}</span>
+                        <strong>{{ item.value }}%</strong>
+                    </div>
+                    <div class="bar">
+                        <div class="bar-fill" style="width: {{ item.value }}%;"></div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </section>
+            {% endif %}
+        </section>
+
+        <section id="about" class="about-card">
+            <h2>À propos</h2>
+            <p>
+                DeepSkyn est une application Flask de déploiement Machine Learning.
+                Elle utilise le modèle sauvegardé dans <strong>model_dermatologie.pkl</strong>
+                et les variables dans <strong>features.pkl</strong>.
+            </p>
+        </section>
+    </main>
+
+    <script>
+        function resetForm() {
+            document.getElementById("predictionForm").reset();
+        }
+    </script>
+</body>
+</html>

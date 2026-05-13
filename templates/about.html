@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À propos - DermatoAI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="background-glow"></div>
+<nav class="navbar">
+    <a class="brand" href="/"><span class="brand-icon">✦</span><span>DermatoAI</span></a>
+    <div class="nav-actions">
+        <a class="nav-link" href="/">Prédiction</a>
+        <a class="nav-link active" href="/about">À propos</a>
+    </div>
+</nav>
+
+<main class="about-layout">
+    <section class="glass-card about-card">
+        <p class="eyebrow small">Présentation du projet</p>
+        <h1>Déploiement d'un modèle Machine Learning dermatologique</h1>
+        <p>
+            Cette application transforme le notebook ML en une application web complète.
+            Le backend Flask charge le modèle sauvegardé, reçoit les données du formulaire,
+            applique le pipeline de preprocessing et retourne la prédiction.
+        </p>
+        <div class="steps">
+            <div><span>01</span><strong>Frontend</strong><p>Interface HTML, CSS et JavaScript moderne.</p></div>
+            <div><span>02</span><strong>Backend</strong><p>API Flask avec route de prédiction.</p></div>
+            <div><span>03</span><strong>Modèle</strong><p>Pipeline ML sauvegardé avec Joblib.</p></div>
+        </div>
+        <a class="primary-btn" href="/">Tester l'application</a>
+    </section>
+</main>
+</body>
+</html>

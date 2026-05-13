@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultat - DermatoAI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="background-glow"></div>
+<nav class="navbar">
+    <a class="brand" href="/"><span class="brand-icon">✦</span><span>DermatoAI</span></a>
+    <div class="nav-actions">
+        <a class="nav-link" href="/">Nouvelle prédiction</a>
+        <a class="nav-link" href="/about">À propos</a>
+    </div>
+</nav>
+
+<main class="result-layout">
+    <section class="result-hero glass-card">
+        <p class="eyebrow small">Résultat de prédiction</p>
+        <h1>{{ disease }}</h1>
+        <p class="prediction-code">Classe prédite : <strong>{{ prediction }}</strong></p>
+        <div class="result-actions">
+            <a class="primary-btn" href="/">Refaire une prédiction</a>
+            <button class="secondary-btn" onclick="window.print()">Imprimer</button>
+        </div>
+    </section>
+
+    {% if probabilities is not none %}
+    <section class="glass-card proba-card">
+        <div class="section-head">
+            <div>
+                <p class="eyebrow small">Confiance du modèle</p>
+                <h2>Probabilités par classe</h2>
+            </div>
+        </div>
+        <div class="proba-list">
+            {% for proba in probabilities %}
+            {% set class_id = loop.index %}
+            <div class="proba-row">
+                <div class="proba-label">
+                    <strong>Classe {{ class_id }}</strong>
+                    <span>{{ disease_names.get(class_id, 'Classe inconnue') }}</span>
+                </div>
+                <div class="proba-track">
+                    <div class="proba-fill" style="width: {{ '%.2f'|format(proba * 100) }}%"></div>
+                </div>
+                <strong>{{ '%.1f'|format(proba * 100) }}%</strong>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <section class="glass-card values-card">
+        <p class="eyebrow small">Données saisies</p>
+        <h2>Résumé patient</h2>
+        <div class="values-grid">
+            {% for key, value in values.items() %}
+            <div class="value-item">
+                <span>{{ key.replace('_', ' ') }}</span>
+                <strong>{{ value }}</strong>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+</body>
+</html>
